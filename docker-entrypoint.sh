@@ -2,6 +2,7 @@
 
 CONFIG_PATH="/data/options.json"
 N8N_PATH="/data/n8n"
+CUSTOM_EXTENSIONS_PATH="/custom"
 
 mkdir -p "${N8N_PATH}/.n8n/.cache"
 
@@ -36,6 +37,7 @@ export N8N_SSL_CERT="/ssl/$(jq --raw-output '.certfile // empty' $CONFIG_PATH)"
 export N8N_SSL_KEY="/ssl/$(jq --raw-output '.keyfile // empty' $CONFIG_PATH)"
 export N8N_CMD_LINE="$(jq --raw-output '.cmd_line_args // empty' $CONFIG_PATH)"
 export N8N_USER_FOLDER="${N8N_PATH}"
+export N8N_CUSTOM_EXTENSIONS="${CUSTOM_EXTENSIONS_PATH}/node_modules/n8n-nodes-puppeteer-extended"
 
 if [ -z "${N8N_BASIC_AUTH_USER}" ] || [ -z "${N8N_BASIC_AUTH_ACTIVE}" ]; then
     export N8N_BASIC_AUTH_ACTIVE=false
@@ -47,10 +49,4 @@ fi
 ## MAIN  ##
 ###########
 
-if [ "$#" -gt 0 ]; then
-  # Got started with arguments
-  exec n8n "${N8N_CMD_LINE}"
-else
-  # Got started without arguments
-  exec n8n start
-fi
+exec n8n start ${N8N_CMD_LINE}
