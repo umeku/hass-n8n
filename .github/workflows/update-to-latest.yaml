@@ -27,7 +27,7 @@ jobs:
       - name: update n8n version in Dockerfile
         if: steps.check_update.outputs.update_needed == 'true'
         run: |
-          sed -i "0,s/N8N_VERSION=.*/N8N_VERSION=${{ steps.n8n_latest_version.outputs.latest_release }}/g" Dockerfile
+          sed -i "s/N8N_VERSION=\d.*/N8N_VERSION=${{ steps.n8n_latest_version.outputs.latest_release }}/g" Dockerfile
 
       - name: update addon configuration in config.json
         if: steps.check_update.outputs.update_needed == 'true'
