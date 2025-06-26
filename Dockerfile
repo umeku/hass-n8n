@@ -17,9 +17,11 @@ RUN set -eux; \
 	find /usr/local/lib/node_modules/n8n -type f -name "*.ts" -o -name "*.js.map" -o -name "*.vue" | xargs rm -f && \
 	rm -rf /root/.npm
 
-# Install puppeteer dependencies
+# Install node and puppeteer dependencies
 USER root
 RUN apk add --no-cache \
+      jq \
+      bash \
       chromium \
       nss \
       freetype \
@@ -31,9 +33,6 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
     PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
 RUN mkdir /custom && cd /custom && npm install git+ssh://git@github.com:umeku/n8n-nodes-puppeteer-extended.git#main
-
-# Install stuff for node
-RUN apk add --no-cache --update jq bash
 
 WORKDIR /data
 COPY docker-entrypoint.sh /tmp/docker-entrypoint.sh
