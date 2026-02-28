@@ -11,10 +11,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Configure Git for HTTPS
-        run: git config --global url."https://github.com/".insteadOf "git@github.com:"
+      - name: Use HTTPS for dependencies (CI only)
+        run: sed -i 's|git+ssh://git@github.com:|https://github.com/|g' Dockerfile
 
       - name: Build add-on
         uses: home-assistant/builder@master
         with:
-          args: --amd64 --target /data --test
+          args: --amd64 --target . --test
