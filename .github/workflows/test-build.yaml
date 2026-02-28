@@ -1,0 +1,20 @@
+name: Test Build
+
+on:
+  pull_request:
+
+jobs:
+  test:
+    name: Test build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use HTTPS for dependencies (CI only)
+        run: sed -i 's|git+ssh://git@github.com:|https://github.com/|g' hass-n8n/Dockerfile
+
+      - name: Build add-on
+        uses: home-assistant/builder@master
+        with:
+          args: --amd64 --target hass-n8n --test
