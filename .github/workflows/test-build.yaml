@@ -1,0 +1,20 @@
+name: Test Build
+
+on:
+  pull_request:
+
+jobs:
+  test:
+    name: Test build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build add-on
+        uses: home-assistant/builder@master
+        with:
+          args: |
+            --amd64 \
+            --target . \
+            --test
